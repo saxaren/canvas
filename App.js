@@ -1,18 +1,32 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import DrawLineCanvas from "./DrawLineCanvas";
 
 export default function App() {
+  const canvasRef = useRef(null);
+
+  const clearCanvas = (ctx) => {
+    if (ctx) {
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Text style={styles.title}>Rita en linje</Text>
-      <DrawLineCanvas />
-      <Button
-        title="Tryck här"
-        onPress={() => console.log("Button pressed!")}
-      />
+      <DrawLineCanvas ref={canvasRef} clearCanvas={clearCanvas} />
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Rensa canvas"
+          onPress={() => {
+            if (canvasRef.current) {
+              clearCanvas(canvasRef.current.getContext("2d"));
+            }
+          }}
+        />
+      </View>
     </View>
   );
 }
@@ -27,5 +41,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: 20, // Ger lite utrymme längst ner
   },
 });
