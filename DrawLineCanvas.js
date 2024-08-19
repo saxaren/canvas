@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, forwardRef } from "react";
-import { StyleSheet, View, PanResponder, Switch } from "react-native";
+import { StyleSheet, View, PanResponder, Switch, Button } from "react-native";
 import Canvas from "react-native-canvas";
 
 const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
@@ -21,6 +21,10 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
 
         // Rensa canvasen vid storleksändring
         context.clearRect(0, 0, canvas.width, canvas.height);
+
+        //lägg till bilden
+        // const img = new Image()
+        // img.src = ''
       }
     }
   }, [isFullSize]);
@@ -63,6 +67,26 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
     setIsFullSize(!isFullSize);
   };
 
+  const logCanvasContent = async () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      try {
+        const dataURL = await canvas.toDataURL("image/png");
+        if (dataURL) {
+          console.log(dataURL);
+          const json = JSON.stringify({ image: dataURL });
+          console.log(json);
+        } else {
+          console.log("Canvas dataURL is empty.");
+        }
+      } catch (error) {
+        console.error("Error while logging canvas content:", error);
+      }
+    } else {
+      console.log("Canvas reference is null.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Switch
@@ -79,9 +103,12 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
       >
         <Canvas ref={canvasRef} />
       </View>
+      <Button title="Logga canvas" onPress={logCanvasContent} />
     </View>
   );
 });
+
+DrawLineCanvas.displayName = "DrawLineCanvas";
 
 const styles = StyleSheet.create({
   container: {

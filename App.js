@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Image } from "react-native";
 import DrawLineCanvas from "./DrawLineCanvas";
 
 export default function App() {
@@ -27,6 +27,10 @@ export default function App() {
           }}
         />
       </View>
+      <Image
+        source={require("./assets/pic/jess-bailey-l3N9Q27zULw-unsplash.jpg")}
+        style={{ width: 100, height: 100 }}
+      />
     </View>
   );
 }
