@@ -27,10 +27,12 @@ export default function App() {
           }}
         />
       </View>
-      <Image
-        source={require("./assets/pic/jess-bailey-l3N9Q27zULw-unsplash.jpg")}
-        style={{ width: 100, height: 100 }}
-      />
+      {/* <View style={styles.imageContainer}>
+        <Image
+          source={require("./assets/pic/jess-bailey-l3N9Q27zULw-unsplash.jpg")}
+          style={{ width: 100, height: 100 }}
+        />
+      </View> */}
     </View>
   );
 }
@@ -40,17 +42,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingTop: 50,
   },
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    marginVertical: 20,
+  },
+  canvas: {
+    marginVertical: 20,
   },
   buttonContainer: {
-    flex: 1,
+    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    paddingBottom: 20, // Ger lite utrymme längst ner
+    paddingBottom: 20,
   },
+  // imageContainer: {
+  //   marginVertical: 20,
+  //   // flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   width: "100%",
+  // },
 });
+
+// tips from Peter, proteceted area på canvasen

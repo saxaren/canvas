@@ -6,6 +6,8 @@ import {
   Switch,
   Button,
   Text,
+  FlatList,
+  Image,
 } from "react-native";
 import Canvas from "react-native-canvas";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +18,8 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPoint, setLastPoint] = useState(null);
   const [isFullSize, setIsFullSize] = useState(false);
+  // const [imageUri, setIamgeUri = useState(null)]
+  // const [shapes, setShape ] = useState([])
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,6 +46,10 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
       ref.current = canvasRef.current;
     }
   }, [ref]);
+
+  // useEffect(() => {
+  //   fetchShapes();
+  // }, []); //hämta figurer vid laddning
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -88,13 +96,6 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
       console.log("Canvas or context is not available");
     }
   };
-
-  // useEffect(() => {
-  //   if (ctx) {
-  //     ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
-  //     ctx.fillRect(50, 50, 200, 100);
-  //   }
-  // }, [ctx]);
 
   const logCanvasContent = async () => {
     const canvas = canvasRef.current;
@@ -159,6 +160,15 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
     }
   };
 
+  const fetchShapes = async () => {
+    fetch("https://raw.githubusercontent.com/saxaren/canvas/main/shapes.json")
+      .then((response) => response.json())
+      .then((result) => {
+        getShapes(result);
+      });
+    console.log(getShapes(result));
+  };
+
   //         // rensa canvas och rita bilden
   //         ctx.clearRect(0, 0, canvas.width, canvas.height); // Rensa canvas
   //         ctx.drawImage(img, 0, 0); // Rita bilden på canvas
@@ -207,9 +217,15 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
         <Button title="Ladda Bild" onPress={loadCanvasImage} />
       </View>
       <View>
-        <Button title="Ladda Bild 2" onPress={loadCanvasImage} />
+        <Button title="fetch" onPress={fetchShapes} />
       </View>
-      <Text>hej</Text>
+
+      <View style={styles.imageContainer}>
+        <Image
+          source={require("./assets/pic/jess-bailey-l3N9Q27zULw-unsplash.jpg")}
+          style={{ width: 100, height: 100 }}
+        />
+      </View>
     </View>
   );
 });
@@ -237,6 +253,52 @@ const styles = StyleSheet.create({
   switch: {
     marginBottom: 10,
   },
+  imageContainer: {
+    marginVertical: 20,
+    // flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
 });
 
 export default DrawLineCanvas;
+
+// const drawShape = (shape)
+//   => {
+//     const { type, color} = shape
+//     ctx.fillStyle = color
+//     ctx.strokeStyle = color
+//   }
+
+//   switch (type) {
+// case "rectangle":
+//   ctx.fillRect(shape.x, shape.y shape.width, shape.height)
+//   break
+// case "triangle":
+//   ctx.beginPath()
+
+// ctx.moveTo(shape.points[0].x, shape.points[0],y)
+// ctx.lineTo(shape.points[1].x, shape.points[1],y)
+// ctx.lineTo(shape.points[2].x, shape.points[2],y)
+// ctx.closePath()
+// ctx.fill()
+
+// case "circle":
+//   ctx.beginPath
+// ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI)
+// ctx.fill()
+// break
+// default:
+//   console.log("Unknown shape:", type)
+//   }
+//   }
+
+//  rektangel för att felsöka
+
+// useEffect(() => {
+//   if (ctx) {
+//     ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+//     ctx.fillRect(50, 50, 200, 100);
+//   }
+// }, [ctx]);
