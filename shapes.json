@@ -1,5 +1,6 @@
 [
   {
+    "id": "1",
     "type": "rectangle",
     "x": 50,
     "y": 50,
@@ -8,6 +9,7 @@
     "color": "red"
   },
   {
+    "id": "2",
     "type": "triangle",
     "points": [
       { "x": 200, "y": 200 },
@@ -17,6 +19,7 @@
     "color": "blue"
   },
   {
+    "id": "3",
     "type": "circle",
     "x": 400,
     "y": 300,
