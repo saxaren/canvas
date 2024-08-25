@@ -21,9 +21,9 @@
   {
     "id": "3",
     "type": "circle",
-    "x": 400,
-    "y": 300,
-    "radius": 50,
+    "x": 100,
+    "y": 100,
+    "radius": 300,
     "color": "green"
   }
 ]

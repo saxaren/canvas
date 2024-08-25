@@ -157,7 +157,7 @@ const DrawLineCanvas = forwardRef(({ clearCanvas, fetchUrl }, ref) => {
 
   const drawShape = (shape) => {
     const { type, color } = shape;
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current; // viktigt!
     const ctx = canvas.getContext("2d"); // Se till att du har en referens till din canvas-kontext
 
     ctx.fillStyle = color;
@@ -180,6 +180,7 @@ const DrawLineCanvas = forwardRef(({ clearCanvas, fetchUrl }, ref) => {
         ctx.beginPath();
         ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
         ctx.fill();
+        console.log("circle", type);
         break;
       default:
         console.log("Unknown shape:", type);
@@ -225,11 +226,12 @@ const DrawLineCanvas = forwardRef(({ clearCanvas, fetchUrl }, ref) => {
       {shapes && (
         <View style={styles.FlatListContainer}>
           <FlatList
+            keyExtractor={(item) => item.id}
             style={styles.FlatList}
             data={shapes}
             renderItem={({ item }) => (
-              <Pressable onPress={() => drawShape(item)}>
-                <Text>Rita {item?.type}</Text>
+              <Pressable style={styles.item} onPress={() => drawShape(item)}>
+                <Text style={styles.itemText}>Rita {item?.type}</Text>
               </Pressable>
             )}
           />
@@ -275,13 +277,21 @@ const styles = StyleSheet.create({
     height: 300,
   },
   FlatListContainer: {
-    backgroundColor: "green",
+    borderWidth: 1,
+    borderColor: "black",
+    backgroundColor: "lightblue",
     width: 100,
     height: 100,
   },
   fullSize: {
     width: 400,
     height: 400,
+  },
+  item: {
+    margin: 3,
+  },
+  itemText: {
+    textAlign: "center",
   },
   switch: {
     marginBottom: 10,
