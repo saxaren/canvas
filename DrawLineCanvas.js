@@ -12,7 +12,7 @@ import {
 import Canvas from "react-native-canvas";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
+const DrawLineCanvas = forwardRef(({ clearCanvas, fetchUrl }, ref) => {
   const canvasRef = useRef(null);
   const [ctx, setCtx] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -147,9 +147,41 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
+      console.log("Fetched data:", result);
       setShapes(result); // Anropa getShapes med den hämtade datan
     } catch (error) {
       console.error("Det gick inte att hämta former:", error);
+    }
+  };
+
+  const drawShape = (shape) => {
+    const { type, color } = shape;
+    const ctx = canvas.getContext("2d"); // Se till att du har en referens till din canvas-kontext
+
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+
+    switch (type) {
+      case "rectangle":
+        ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+        break;
+      case "triangle":
+        ctx.beginPath();
+
+        ctx.moveTo(shape.points[0].x, shape.points[0].y);
+        ctx.lineTo(shape.points[1].x, shape.points[1].y);
+        ctx.lineTo(shape.points[2].x, shape.points[2].y);
+        ctx.closePath();
+        ctx.fill();
+        break;
+      case "circle":
+        ctx.beginPath();
+        ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        break;
+      default:
+        console.log("Unknown shape:", type);
+        break;
     }
   };
 
@@ -186,6 +218,7 @@ const DrawLineCanvas = forwardRef(({ clearCanvas }, ref) => {
       </View>
       <View>
         <Button title="fetch" onPress={fetchShapes} />
+        <Button title="drawRectangles" onPress={drawShape} />
       </View>
 
       <View style={styles.imageContainer}>
@@ -278,3 +311,36 @@ export default DrawLineCanvas;
 //     ctx.fillRect(50, 50, 200, 100);
 //   }
 // }, [ctx]);
+
+// -----------------------------------------------------------
+
+// const drawShape = (shape) => {
+//   const { type, color } = shape;
+//   const ctx = canvas.getContext("2d"); // Se till att du har en referens till din canvas-kontext
+
+//   ctx.fillStyle = color;
+//   ctx.strokeStyle = color;
+
+//   switch (type) {
+//     case "rectangle":
+//       ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+//       break;
+//     case "triangle":
+//       ctx.beginPath();
+
+//       ctx.moveTo(shape.points[0].x, shape.points[0].y);
+//       ctx.lineTo(shape.points[1].x, shape.points[1].y);
+//       ctx.lineTo(shape.points[2].x, shape.points[2].y);
+//       ctx.closePath();
+//       ctx.fill();
+//       break;
+//     case "circle":
+//       ctx.beginPath();
+//       ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
+//       ctx.fill();
+//       break;
+//     default:
+//       console.log("Unknown shape:", type);
+//       break;
+//   }
+// };
