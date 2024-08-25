@@ -22,7 +22,7 @@
     "id": "3",
     "type": "circle",
     "x": 100,
-    "y": 100,
+    "y": 150,
     "radius": 70,
     "color": "green"
   }
