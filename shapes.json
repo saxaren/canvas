@@ -23,7 +23,7 @@
     "type": "circle",
     "x": 100,
     "y": 100,
-    "radius": 300,
+    "radius": 70,
     "color": "green"
   }
 ]
